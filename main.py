@@ -1,18 +1,40 @@
-def query_to_dict(url:str) -> str:
-    if len(url.strip()) > 0:
-        if all(s not in url for s in ["http://", "https://"]):
-            raise ValueError("Invalid URL. Must be HTTP or HTTPS")
-        param_index = url.find("?")+1
-        if param_index:
+class QueryToDict:
+    def __init__(self, url):
+        self.__set_values__(url)
+        
+    def __set_values__(self, url):
+        self.url = url
+        if type(url) is str:
+            self.param_index = self.url.find("?")+1
+    
+    def __str__(self):
+        return  str(self.start())
+            
+    def check_params_in_query(self) -> dict:
+        if all(s not in self.url for s in ["http://", "https://"]):
+            return ValueError(f"Error - Invalid URL '{self.url}'. Must be HTTP or HTTPS")
+        if self.param_index:
             return {
                 i.split('=')[0]:i.split("=")[1]
-                for i in url[param_index:].split("&")
+                for i in self.url[self.param_index:].split("&")
             }
-        return "Não tem parâmetro"
-    raise ValueError("Invalid URL. Must not be empty")
+        return ValueError(f"Error - No query params found in '{self.url}'")
+        
+    def start(self) -> dict:
+        if type(self.url) is str and len(self.url.strip()) > 0:
+            return self.check_params_in_query()
+        return ValueError(f"Error - Invalid URL '{self.url} {'- ' + str(type(self.url)) if type(self.url) is not str else ''}'. Must be a string and not empty")
+        
 
 def main():
-    print(query_to_dict("https://bytebank.com/cambio?moedaOrigem=real&moedaDestino=dolar&quantidade=100"))
+    print(QueryToDict("https://bytebank.com/cambio?moedaOrigem=real&moedaDestino=dolar&quantidade=100"))
+    # print(QueryToDict("https://bytebank.com"))
+    # print(QueryToDict(None))
+    # print(QueryToDict(""))
+    # print(QueryToDict("     "))
+    # print(QueryToDict(2))
+    # print(QueryToDict("bytebank"))
+
 
 if __name__ == '__main__':
     main()
