@@ -28,12 +28,8 @@ class QueryToDict:
 
 def main():
     print(QueryToDict("https://bytebank.com/cambio?moedaOrigem=real&moedaDestino=dolar&quantidade=100"))
-    # print(QueryToDict("https://bytebank.com"))
-    # print(QueryToDict(None))
-    # print(QueryToDict(""))
-    # print(QueryToDict("     "))
-    # print(QueryToDict(2))
-    # print(QueryToDict("bytebank"))
+
+
 
 
 if __name__ == '__main__':
